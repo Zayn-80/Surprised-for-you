@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprised for You</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: red;
+            font-size: 2rem;
+        }
+        #video {
+            width: 300px;
+            height: 200px;
+            border: 2px solid black;
+            margin-top: 20px;
+            display: none; /* Tersembunyi sampai kamera diaktifkan */
+        }
+        #fileInfo {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Surprised for you</h1>
+    
+    <!-- Tombol untuk mengakses kamera -->
+    <button id="startCamera">Start Camera</button>
+    <video id="video" autoplay></video>
+    
+    <!-- Input untuk memilih file -->
+    <input type="file" id="fileInput" accept="image/*">
+    
+    <!-- Informasi file yang dipilih -->
+    <div id="fileInfo"></div>
+    
+    <script>
+        const video = document.getElementById('video');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const startCameraButton = document.getElementById('startCamera');
+
+        // Event listener untuk tombol kamera
+        startCameraButton.addEventListener('click', async () => {
+            try {
+                // Meminta akses ke kamera
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.style.display = 'block'; // Menampilkan elemen video
+            } catch (error) {
+                console.error('Error accessing the camera:', error);
+            }
+        });
+
+        // Event listener untuk saat pengguna memilih file
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                // Menampilkan nama file yang dipilih
+                fileInfo.textContent = `File selected: ${file.name}`;
+            } else {
+                fileInfo.textContent = 'No file selected';
+            }
+        });
+    </script>
+</body>
+</html>
